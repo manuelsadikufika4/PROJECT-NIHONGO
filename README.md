@@ -133,6 +133,6 @@ Distribuído sob a licença **MIT**. Vê o ficheiro [LICENSE](LICENSE).
 
 <div align="center">
 
-Feito com ❤️ por Manuel Sadi Kufika · がんばって！
+Feito por Manuel Sadi Kufika · がんばって！
 
 </div>
