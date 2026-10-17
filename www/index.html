@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nihongo Michi</title>
+<style>
+:root{--bg:#faf6f0;--card:#fff;--tx:#2a2420;--mu:#7a6f66;--ac:#c8372d;--ok:#2e7d4f;--bd:#e8dfd3;--okb:#e3f3e8;--erb:#fbe4e1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1815;--card:#26221e;--tx:#f1ebe4;--mu:#a69b90;--ac:#ef6a5e;--ok:#5cc785;--bd:#3a342e;--okb:#1f3a29;--erb:#432522}}
+:root[data-theme="dark"]{--bg:#1b1815;--card:#26221e;--tx:#f1ebe4;--mu:#a69b90;--ac:#ef6a5e;--ok:#5cc785;--bd:#3a342e;--okb:#1f3a29;--erb:#432522}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.5}
+#app{max-width:480px;margin:0 auto;padding:20px 16px 40px;min-height:100vh}
+h1,h2,h3{margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:12px 0}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:12px;background:var(--ac);color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:12px}
+.btn.alt{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+.opt{display:block;width:100%;text-align:left;padding:14px;margin:8px 0;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);font-size:16px;cursor:pointer}
+.opt.ok{background:var(--okb);border-color:var(--ok)}.opt.er{background:var(--erb);border-color:var(--ac)}
+input{width:100%;padding:14px;font-size:18px;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx)}
+.mu{color:var(--mu);font-size:14px}
+.jp{font-size:40px;text-align:center;margin:8px 0}
+.jp rt{font-size:14px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;text-align:center}
+.stat b{font-size:26px;display:block;color:var(--ac)}
+.lock{opacity:.5}
+.bar{height:6px;background:var(--bd);border-radius:3px;margin-top:8px}.bar i{display:block;height:100%;background:var(--ok);border-radius:3px}
+.splash{text-align:center;padding-top:25vh}.splash .logo{font-size:84px;color:var(--ac);animation:pop 1s ease}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.back{background:none;border:0;color:var(--mu);font-size:15px;cursor:pointer;padding:0 0 8px}
+footer{text-align:center;color:var(--mu);font-size:13px;margin-top:32px;padding-top:16px;border-top:1px solid var(--bd)}
+.ic{width:1em;height:1em;fill:currentColor;vertical-align:-.125em}
+.stat .ic{font-size:20px;color:var(--ac)}
+.pill{display:inline-block;background:var(--bd);border-radius:20px;padding:2px 10px;font-size:13px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<footer>Criador: <b>Manuel Sadi Kufika</b></footer>
+<script>
+const AULAS=[
+{id:1,titulo:"Nível 1 – Básico (N5)",aulas:[
+{id:"1.1",titulo:"Ohayou – Bom dia",cultura:"No Japão, diz-se «ohayou» de manhã, geralmente até cerca das 11h. Entre amigos usa-se «ohayou», e com superiores acrescenta-se «gozaimasu» para ser educado.",jp:"おはよう",rm:"o-ha-yo-u",tr:"Bom dia",p:"Como se diz «Bom dia»?",o:["Konnichiwa","Ohayou","Sayonara"],c:1},
+{id:"1.2",titulo:"Konnichiwa – Boa tarde",cultura:"Os japoneses cumprimentam com uma pequena vénia (ojigi) em vez de aperto de mão. Quanto mais profunda a vénia, maior o respeito.",jp:"こんにちは",rm:"kon-ni-chi-wa",tr:"Olá / Boa tarde",p:"Qual saudação se usa durante o dia, à tarde?",o:["Konnichiwa","Oyasumi","Arigatou"],c:0},
+{id:"1.3",titulo:"Arigatou – Obrigado",cultura:"Dizer obrigado é muito valorizado. Em situações formais diz-se «arigatou gozaimasu» e acompanha-se de uma vénia.",jp:"ありがとう",rm:"a-ri-ga-to-u",tr:"Obrigado(a)",p:"O que significa «Arigatou»?",o:["Desculpa","Obrigado","Adeus"],c:1},
+{id:"1.4",titulo:"Gakusei – Estudante",cultura:"Os kanji são caracteres vindos da China. O furigana (letras pequenas por cima) ajuda a ler os que ainda não conheces.",jp:"<ruby>私<rt>わたし</rt></ruby>は<ruby>学生<rt>がくせい</rt></ruby>です",rm:"wa-ta-shi wa ga-ku-sei de-su",tr:"Eu sou estudante",p:"Como se lê 学生?",o:["Sensei","Gakusei","Nihon"],c:1}]},
+{id:2,titulo:"Nível 2 – Intermediário (N4)",aulas:[
+{id:"2.1",titulo:"Itadakimasu – Antes de comer",cultura:"Antes de comer, os japoneses juntam as mãos e dizem «itadakimasu», agradecendo a comida e a quem a preparou.",jp:"いただきます",rm:"i-ta-da-ki-ma-su",tr:"Vou receber (esta refeição)",p:"Quando se diz «Itadakimasu»?",o:["Ao sair de casa","Antes de comer","Ao dormir"],c:1},
+{id:"2.2",titulo:"Onegaishimasu – Por favor",cultura:"Expressão muito versátil: pede-se algo, ou pede-se cuidado numa relação nova. Aparece em restaurantes, lojas e apresentações.",jp:"<ruby>お願<rt>おねが</rt></ruby>いします",rm:"o-ne-gai shi-ma-su",tr:"Por favor / Peço-lhe",p:"Qual expressão significa «Por favor» ao pedir algo?",o:["Sumimasen","Onegaishimasu","Ittekimasu"],c:1}]},
+{id:3,titulo:"Nível 3 – Avançado (N3)",aulas:[
+{id:"3.1",titulo:"Otsukaresama – Bom trabalho",cultura:"No trabalho japonês, «otsukaresama desu» reconhece o esforço do colega. É dito ao cruzar com alguém ou ao fim do dia.",jp:"<ruby>お疲<rt>おつか</rt></ruby>れ<ruby>様<rt>さま</rt></ruby>です",rm:"o-tsu-ka-re-sa-ma de-su",tr:"Obrigado pelo teu esforço",p:"Quando se diz «Otsukaresama desu»?",o:["Para reconhecer o esforço de alguém","Para pedir desculpa","Para dar as boas-vindas"],c:0},
+{id:"3.2",titulo:"Shitsurei shimasu – Com licença",cultura:"Usa-se ao entrar ou sair de uma sala de um superior, e ao desligar o telefone. Mostra respeito pelo espaço do outro.",jp:"<ruby>失礼<rt>しつれい</rt></ruby>します",rm:"shi-tsu-rei shi-ma-su",tr:"Com licença / Peço licença",p:"O que significa 失礼します?",o:["Até amanhã","Com licença","Muito prazer"],c:1}]}
+];
+const ICONS={
+"lock":'<path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>',
+"check-circle-fill":'<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>',
+"trophy-fill":'<path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"/>',
+"star-fill":'<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>',
+"arrow-left":'<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>',
+"chevron-right":'<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>',
+"x-circle-fill":'<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>',
+"book-fill":'<path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>',
+"volume-up-fill":'<path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/><path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/><path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707z"/><path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/>'
+};
+const ic=n=>`<svg class="ic" viewBox="0 0 16 16" aria-hidden="true">${ICONS[n]}</svg>`;
+const K="nihongo_v1";
+let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+S=S||{nome:"",pts:{}};
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const $=document.getElementById("app");
+const modScore=m=>m.aulas.reduce((a,l)=>a+(S.pts[l.id]||0),0);
+const modMax=m=>m.aulas.length*10;
+const done=m=>m.aulas.every(l=>l.id in S.pts);
+const total=()=>AULAS.reduce((a,m)=>a+modScore(m),0);
+const rank=()=>Math.round(AULAS.reduce((a,m)=>a+modScore(m)/modMax(m)*100,0)/AULAS.length);
+const unlocked=i=>i===0||done(AULAS[i-1]);
+function speak(t){try{const u=new SpeechSynthesisUtterance(t.replace(/<rt>.*?<\/rt>|<[^>]+>/g,""));u.lang="ja-JP";speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function splash(){$.innerHTML='<div class="splash"><div class="logo">日</div><h1>Nihongo Michi</h1><p class="mu">O caminho do japonês</p></div>';setTimeout(()=>S.nome?dash():nome(),1600)}
+function nome(){$.innerHTML='<h2 style="margin-top:20vh">Como te chamas?</h2><p class="mu">Guardamos o teu nome apenas neste dispositivo.</p><input id="n" placeholder="O teu nome" maxlength="30"><button class="btn" id="go">Começar</button>';
+const go=()=>{const v=document.getElementById("n").value.trim();if(!v)return;S.nome=v;save();dash()};
+document.getElementById("go").onclick=go;document.getElementById("n").onkeydown=e=>e.key==="Enter"&&go()}
+function dash(){
+$.innerHTML=`<h2>Olá, ${esc(S.nome)}!</h2><p class="mu">Continua a tua jornada no japonês.</p>
+<div class="stats"><div class="stat">${ic("star-fill")}<b>${total()}</b><span class="mu">Pontos</span></div><div class="stat">${ic("trophy-fill")}<b>${rank()}%</b><span class="mu">Ranking (média)</span></div></div>
+<h3 style="margin-top:20px">Módulos</h3>`+AULAS.map((m,i)=>{const u=unlocked(i),p=Math.round(m.aulas.filter(l=>l.id in S.pts).length/m.aulas.length*100);
+return `<div class="card ${u?"":"lock"}" ${u?`data-m="${i}" style="cursor:pointer"`:""}><div class="row"><b>${m.titulo}</b><span class="pill">${u?modScore(m)+"/"+modMax(m):ic("lock")}</span></div><div class="bar"><i style="width:${p}%"></i></div></div>`}).join("")+
+'<button class="btn alt" id="rs">Mudar nome / reiniciar</button>';
+$.querySelectorAll("[data-m]").forEach(e=>e.onclick=()=>modulo(+e.dataset.m));
+document.getElementById("rs").onclick=()=>{if(confirm("Apagar nome e progresso?")){S={nome:"",pts:{}};save();nome()}}}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function modulo(i){const m=AULAS[i];
+$.innerHTML=`<button class="back" id="b">${ic("arrow-left")} Painel</button><h2>${m.titulo}</h2><p class="mu">Nota do módulo: ${modScore(m)}/${modMax(m)}</p>`+m.aulas.map((l,j)=>`<div class="card" data-l="${j}" style="cursor:pointer"><div class="row"><b>${l.titulo}</b><span>${l.id in S.pts?ic("check-circle-fill")+" "+S.pts[l.id]:ic("chevron-right")}</span></div></div>`).join("");
+document.getElementById("b").onclick=dash;
+$.querySelectorAll("[data-l]").forEach(e=>e.onclick=()=>aula(i,+e.dataset.l))}
+function aula(i,j){const m=AULAS[i],l=m.aulas[j];
+$.innerHTML=`<button class="back" id="b">${ic("arrow-left")} ${m.titulo}</button><h2>${l.titulo}</h2>
+<div class="card"><div class="mu">${ic("book-fill")} Cultura</div><p>${l.cultura}</p></div>
+<div class="card"><div class="jp">${l.jp}</div><p style="text-align:center;margin:0"><b>${l.tr}</b></p><p class="mu" style="text-align:center">${l.rm}</p><button class="btn alt" id="au">${ic("volume-up-fill")} Ouvir pronúncia</button></div>
+<button class="btn" id="q">Fazer pergunta (10 pts)</button>`;
+document.getElementById("b").onclick=()=>modulo(i);
+document.getElementById("au").onclick=()=>speak(l.jp);
+document.getElementById("q").onclick=()=>quiz(i,j)}
+function quiz(i,j){const m=AULAS[i],l=m.aulas[j];let first=true;
+$.innerHTML=`<button class="back" id="b">${ic("arrow-left")} Aula</button><h2>${l.p}</h2><div id="os">${l.o.map((o,k)=>`<button class="opt" data-k="${k}">${o}</button>`).join("")}</div><div id="fb"></div>`;
+document.getElementById("b").onclick=()=>aula(i,j);
+$.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const k=+b.dataset.k;
+if(k===l.c){b.classList.add("ok");$.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+if(!(l.id in S.pts)){S.pts[l.id]=first?10:0;save()}
+const nx=j+1<m.aulas.length;
+document.getElementById("fb").innerHTML=`<div class="card"><b style="color:var(--ok)">${ic("check-circle-fill")} ${first&&S.pts[l.id]===10?"Correto! +10 pontos":"Correto!"}</b><p class="mu">Nota do módulo: ${modScore(m)}/${modMax(m)}</p></div><button class="btn" id="nx">${nx?"Próxima aula":"Concluir módulo"}</button>`;
+document.getElementById("nx").onclick=()=>nx?aula(i,j+1):dash()}
+else{first=false;b.classList.add("er");b.disabled=true;document.getElementById("fb").innerHTML=`<p class="mu">${ic("x-circle-fill")} Quase! Tenta outra vez (sem pontos nesta aula).</p>`}})}
+splash();
+</script>
+</body>
+</html>
