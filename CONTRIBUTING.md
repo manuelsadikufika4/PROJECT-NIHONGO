@@ -17,7 +17,7 @@ Toda a ajuda é bem-vinda: aulas novas, correções de japonês, melhorias no c�
 1. Faz **Fork** do repositório.
 2. Clona o teu fork:
    ```bash
-   git clone https://github.com/SEU_USUARIO/PROJECT-NIHONGO.git
+   git clone https://github.com/manuelsadikufika4/PROJECT-NIHONGO.git
    cd PROJECT-NIHONGO
    ```
 3. Cria uma branch para a tua alteração:
